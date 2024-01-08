@@ -23,7 +23,7 @@ def bad_request_404(e):
     """Handler for 404 errors.
     return: JSON-formatted 404 status code
     """
-    return 'error: Not found', 404
+    return jsonify(error: 'Not found'), 404
 
 
 if __name__ == "__main__":
