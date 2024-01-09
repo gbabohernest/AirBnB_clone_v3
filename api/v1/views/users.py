@@ -15,7 +15,7 @@ def get_all_users():
     return jsonify(all_users)
 
 
-@app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/users/<string:user_id>', methods=['GET'], strict_slashes=False)
 def get_user_by_id(user_id):
     """Retrieves a user object by ID"""
     user = storage.get(User, user_id)
@@ -24,7 +24,7 @@ def get_user_by_id(user_id):
     return jsonify(user.to_dict())
 
 
-@app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/users/<string:user_id>', methods=['DELETE'], strict_slashes=False)
 def delete_user(user_id):
     """Deletes a user object from storage by id"""
     user = storage.get(User, user_id)
@@ -52,7 +52,7 @@ def create_user():
     return jsonify(user_obj.to_dict()), 201
 
 
-@app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
+@app_views.route('/users/<string:user_id>', methods=['PUT'], strict_slashes=False)
 def update_user(user_id):
     """Updates a Users object in storage by id."""
     json_data = request.get_json()
