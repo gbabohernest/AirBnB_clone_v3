@@ -66,7 +66,7 @@ def post_state(state_id):
     if state_obj is None:
         abort(404)
     for k, v in request_data.items():
-        if k not in ['id', 'created_at', 'updated']:
+        if k not in ['id', 'created_at', 'updated_at']:
             setattr(state_obj, k, v)
     storage.save()
     return jsonify(state_obj.to_dict())
