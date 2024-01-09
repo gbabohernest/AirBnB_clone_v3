@@ -44,12 +44,12 @@ def del_state(state_id):
 def create_state():
     """Creates a State"""
     request_data = request.get_json()
-if request_data is None:
-    error_response = jsonify({"error": "Not a JSON"})
-    return make_response(error_response, 400)
-if 'name' not in request_data:
-    error_response = jsonify({"error": "Missing name"})
-    return make_response(error_response, 400)
+    if request_data is None:
+        error_response = jsonify({"error": "Not a JSON"})
+        return make_response(error_response, 400)
+    if 'name' not in request_data:
+        error_response = jsonify({"error": "Missing name"})
+        return make_response(error_response, 400)
     state_obj = State(**request_data)
     state_obj.save()
     return jsonify(state_obj.to_dict()), 201
