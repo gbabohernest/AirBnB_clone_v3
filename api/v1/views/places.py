@@ -98,31 +98,35 @@ def places_search():
     except Exception:
         abort(400, description="Not a JSON")
 
-    if not search_data or all(len(value) == 0 for value in
-                              search_data.values()):
+    if not search_data or not any(search_data.values()):
         # Retrieve all Place objects if the JSON body is empty
-        # or each list is empty
         places = storage.all(Place).values()
     else:
         # Filter based on the search criteria
         places = set()
+        states = search_data.get('states', [])
+        cities = search_data.get('cities', [])
+        amenities = search_data.get('amenities', [])
 
-        if 'states' in search_data:
-            for state_id in search_data['states']:
+        if states:
+            for state_id in states:
                 state = storage.get(State, state_id)
                 if state:
                     places.update(state.places)
 
-        if 'cities' in search_data:
-            for city_id in search_data['cities']:
+        if cities:
+            for city_id in cities:
                 city = storage.get(City, city_id)
                 if city:
                     places.update(city.places)
 
-        if 'amenities' in search_data:
-            amenities = set(search_data['amenities'])
-            places = [place for place in places if
-                      amenities.issubset(place.amenities)]
+        if not states and not cities:
+            places.update(storage.all(Place).values())
 
-    places_list = [place.to_dict() for place in places]
-    return jsonify(places_list)
+        if amenities:
+            amenities_set = set(amenities)
+            places = [place for place in places if
+                      amenities_set.issubset(set(place.amenities))]
+
+    result = [place.to_dict() for place in places]
+    return jsonify(result)
