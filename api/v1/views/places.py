@@ -8,6 +8,7 @@ from models import storage
 from models.place import Place
 from models.city import City
 from models.user import User
+from models.state import State
 
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
@@ -87,3 +88,41 @@ def update_place(place_id):
 
     storage.save()
     return jsonify(place.to_dict()), 200
+
+
+@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
+def places_search():
+    """Search for Place objects based on JSON in the request body"""
+    try:
+        search_data = request.get_json()
+    except Exception:
+        abort(400, description="Not a JSON")
+
+    if not search_data or all(len(value) == 0 for value in
+                              search_data.values()):
+        # Retrieve all Place objects if the JSON body is empty
+        # or each list is empty
+        places = storage.all(Place).values()
+    else:
+        # Filter based on the search criteria
+        places = set()
+
+        if 'states' in search_data:
+            for state_id in search_data['states']:
+                state = storage.get(State, state_id)
+                if state:
+                    places.update(state.places)
+
+        if 'cities' in search_data:
+            for city_id in search_data['cities']:
+                city = storage.get(City, city_id)
+                if city:
+                    places.update(city.places)
+
+        if 'amenities' in search_data:
+            amenities = set(search_data['amenities'])
+            places = [place for place in places if
+                      amenities.issubset(place.amenities)]
+
+    places_list = [place.to_dict() for place in places]
+    return jsonify(places_list)
