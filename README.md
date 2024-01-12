@@ -160,8 +160,8 @@ Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://tw
 
 Second part of Airbnb: Joann Vuong
 
-AirBnB RESTful API: Ernest Push Gbaboh - [Github](https://github.com/gbabohernest)
-AirBnB RESTful API: Coker Babafemi - [Github](https://github.com/Doctorstrange)
+AirBnB_clone RESTful API: Ernest Push Gbaboh - [Github](https://github.com/gbabohernest)
+AirBnB_clone RESTful API: Coker Babafemi - [Github](https://github.com/Doctorstrange)
 
 ## License
 Public Domain. No copy write protection. 
